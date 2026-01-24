@@ -1,35 +1,69 @@
+// src/components/Navbar.tsx
 "use client";
 
-import ThemeToggle from "@/components/ThemeProvider";
+import { useEffect, useState } from "react";
+import DrawerMenu from "@/components/DrawerMenu";
 
-const links = [
-  { label: "Home", href: "#home" },
-  { label: "Experience", href: "#experience" },
+const topLinks = [
+  { label: "About", href: "#about" },
   { label: "Projects", href: "#projects" },
-  { label: "Education", href: "#education" },
-  { label: "Contact", href: "#contact" },
+  { label: "Experience", href: "#experience" }
 ];
 
 export default function Navbar() {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur bg-black/40 border-b border-white/10">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <span className="font-bold text-lg text-white">Soufiane Radouane</span>
+    <>
+      <header className="fixed left-0 top-0 z-50 w-full">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-10 py-8">
+          <div className="text-xl tracking-tight text-black/85">
+            SOUFIANE<span className="text-black/35">.</span>
+          </div>
 
-        <div className="flex items-center gap-6">
-          {links.map((l) => (
+          <nav className="hidden items-center gap-6 md:flex">
+            {topLinks.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                className="text-xs tracking-widest text-black/60 hover:text-black"
+              >
+                {l.label.toUpperCase()}
+              </a>
+            ))}
+
             <a
-              key={l.label}
-              href={l.href}
-              className="text-sm text-white/80 hover:text-white transition"
+              href="#contact"
+              className="rounded-full border border-black/15 bg-white/50 px-4 py-2 text-xs tracking-widest hover:bg-white transition"
             >
-              {l.label}
+              CONTACT →
             </a>
-          ))}
-
-          <ThemeToggle />
+          </nav>
         </div>
-      </div>
-    </nav>
+      </header>
+
+      {/* floating menu button (bottom-right) */}
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="fixed bottom-8 right-8 z-[55] grid h-12 w-12 place-items-center rounded-xl border border-black/10 bg-white/60 backdrop-blur hover:bg-white transition"
+        aria-label="Open menu"
+      >
+        <div className="space-y-1">
+          <div className="h-[2px] w-5 bg-black/80" />
+          <div className="h-[2px] w-5 bg-black/80" />
+          <div className="h-[2px] w-5 bg-black/80" />
+        </div>
+      </button>
+
+      <DrawerMenu open={open} onClose={() => setOpen(false)} />
+    </>
   );
 }

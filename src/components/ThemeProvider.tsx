@@ -1,3 +1,4 @@
+// src/components/ThemeProvider.tsx
 "use client";
 
 import { Moon, Sun } from "lucide-react";
