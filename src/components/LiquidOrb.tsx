@@ -27,6 +27,7 @@ uniform float u_hasDerivatives;
 
 varying vec2 v_uv;
 
+/* ---------- Noise ---------- */
 float hash(vec2 p){
   p = fract(p * vec2(123.34, 345.45));
   p += dot(p, p + 34.345);
@@ -61,26 +62,51 @@ float sCurve(float x){
   return x * x * (3.0 - 2.0 * x);
 }
 
-vec3 modernPalette(float t){
+float luma(vec3 c){
+  return dot(c, vec3(0.2126, 0.7152, 0.0722));
+}
+
+/* =========================
+   OFFBRAND-ISH PALETTE
+   - warm paper base
+   - cool graphite shadows
+   - tiny aurora hints (ice/lavender/sand)
+   - low saturation = modern
+========================= */
+vec3 offbrandPalette(float t){
   t = fract(t);
 
-  vec3 c1 = vec3(1.00, 0.63, 0.86);
-  vec3 c2 = vec3(0.73, 0.68, 1.00);
-  vec3 c3 = vec3(0.50, 0.93, 1.00);
-  vec3 c4 = vec3(1.00, 0.92, 0.74);
+  // “paper + ink” neutrals with subtle tint stops
+  vec3 paper  = vec3(0.95, 0.93, 0.90); // warm off-white
+  vec3 ice    = vec3(0.78, 0.88, 0.93); // soft ice blue
+  vec3 lilac  = vec3(0.83, 0.82, 0.93); // muted lavender
+  vec3 sand   = vec3(0.93, 0.88, 0.78); // warm sand
+  vec3 mist   = vec3(0.90, 0.91, 0.92); // cool mist gray
 
   vec3 col;
-  if (t < 0.33) col = mix(c1, c2, sCurve(t / 0.33));
-  else if (t < 0.66) col = mix(c2, c3, sCurve((t - 0.33) / 0.33));
-  else col = mix(c3, c4, sCurve((t - 0.66) / 0.34));
+  if (t < 0.25) {
+    col = mix(paper, mist, sCurve(t / 0.25));
+  } else if (t < 0.50) {
+    col = mix(mist, ice, sCurve((t - 0.25) / 0.25));
+  } else if (t < 0.75) {
+    col = mix(ice, lilac, sCurve((t - 0.50) / 0.25));
+  } else {
+    col = mix(lilac, sand, sCurve((t - 0.75) / 0.25));
+  }
 
-  col = mix(col, vec3(1.0), 0.08);
+  // reduce saturation = more “editorial”
+  float g = luma(col);
+  col = mix(vec3(g), col, 0.62);
+
+  // slightly milky
+  col = mix(col, vec3(1.0), 0.05);
   return col;
 }
 
 void main(){
   vec2 uv = v_uv;
   vec2 p = uv * 2.0 - 1.0;
+
   float aspect = u_res.x / u_res.y;
   p.x *= aspect;
 
@@ -90,14 +116,16 @@ void main(){
   float t = u_time;
   float r = length(p);
 
-  float edgeNoise = fbm(p * 4.0 + t * 0.35);
-  float edgeWave  = sin((p.x * 5.0 + p.y * 4.0) + t * 1.6) * 0.04;
+  /* ---- Edge distortion (slightly calmer than before) ---- */
+  float edgeNoise = fbm(p * 3.6 + t * 0.26);
+  float edgeWave  = sin((p.x * 4.2 + p.y * 3.8) + t * 1.25) * 0.03;
 
   float md = length(p - m);
-  float mousePush = u_hover * 0.16 * exp(-6.0 * md);
+  float mousePush = u_hover * 0.14 * exp(-6.2 * md);
 
-  float rr = r + edgeNoise * 0.09 + edgeWave + mousePush;
+  float rr = r + edgeNoise * 0.075 + edgeWave + mousePush;
 
+  /* ---- AA (safe fallback) ---- */
   float aa = 0.01;
   #ifdef GL_OES_standard_derivatives
     aa = max(0.002, fwidth(rr) * 1.6);
@@ -111,36 +139,55 @@ void main(){
   }
 
   float rim =
-    smoothstep(1.00, 0.92, rr) -
-    smoothstep(0.985, 0.90, rr);
+    smoothstep(1.00, 0.93, rr) -
+    smoothstep(0.985, 0.91, rr);
   rim = clamp(rim, 0.0, 1.0);
 
+  /* ---- Liquid field (calmer internal flow) ---- */
   float ang = atan(p.y, p.x);
-  float swirl = sin(ang * 3.0 + t * 0.9) * 0.15;
+  float swirl = sin(ang * 2.6 + t * 0.65) * 0.12;
 
   vec2 q = p;
-  q += 0.20 * vec2(
-    fbm(p * 2.0 + t * 0.4),
-    fbm(p * 2.0 - t * 0.35)
+  q += 0.16 * vec2(
+    fbm(p * 1.9 + t * 0.25),
+    fbm(p * 1.9 - t * 0.22)
   );
   q += swirl * vec2(-p.y, p.x);
 
   float d = length(p - m);
-  float ripple = sin(18.0 * d - t * 7.0) * exp(-3.5 * d);
-  q += u_hover * ripple * 0.38 * normalize(p - m + 0.0001);
+  float ripple = sin(16.0 * d - t * 6.4) * exp(-3.8 * d);
+  q += u_hover * ripple * 0.28 * normalize(p - m + 0.0001);
 
-  float n = fbm(q * 2.0 + t * 0.10);
-  float pt = n +
-             0.06 * sin(t * 0.18) +
-             0.03 * fbm(q * 1.2 + t * 0.05);
+  // palette driver: slow drift, minimal contrast
+  float n = fbm(q * 1.85 + t * 0.07);
+  float aur = fbm(q * 2.6 + vec2(0.0, t * 0.045));
+  float pt = n * 0.92 + 0.08 * aur + 0.03 * sin(t * 0.12);
 
-  vec3 col = modernPalette(pt);
+  vec3 col = offbrandPalette(pt);
 
-  vec2 light = normalize(vec2(-0.7, 0.9));
-  float spec = pow(max(0.0, dot(normalize(p), light)), 10.0);
-  col += 0.14 * spec;
-  col += 0.22 * rim;
-  col *= mix(1.0, 0.88, r * r);
+  /* ---- Lighting: “studio” highlight + ink depth ---- */
+  vec2 nn = normalize(p + 0.0001);
+  vec2 light = normalize(vec2(-0.55, 0.85));
+
+  float ndl = max(0.0, dot(nn, light));
+  float spec = pow(ndl, 22.0);
+
+  // glossy highlight (clean)
+  col += 0.08 * spec;
+
+  // milky rim
+  col += 0.18 * rim;
+
+  // gentle “ink shadow” toward edges
+  col *= mix(1.0, 0.90, r * r);
+
+  // subtle core lift (depth)
+  float core = exp(-3.0 * r * r);
+  col += 0.04 * core;
+
+  // tiny grain to avoid banding
+  float g = (hash(gl_FragCoord.xy + t) - 0.5) * 0.012;
+  col += g;
 
   gl_FragColor = vec4(col, circle);
 }
@@ -157,16 +204,15 @@ export default function LiquidOrb({ className = "" }: { className?: string }) {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    // Force canvas to have a real size in layout
+    // Ensure canvas has layout size
     canvas.style.display = "block";
     canvas.style.width = "100%";
     canvas.style.height = "100%";
-    canvas.style.touchAction = "none"; // important for pointer events on mobile/trackpad
+    canvas.style.touchAction = "none";
 
     const gl = canvas.getContext("webgl", { alpha: true, antialias: true });
     if (!gl) return;
 
-    // Detect derivatives support (AA)
     const ext = gl.getExtension("OES_standard_derivatives");
     const HAS_DERIV = ext ? 1 : 0;
     const FRAG_SRC = ext
@@ -192,7 +238,6 @@ export default function LiquidOrb({ className = "" }: { className?: string }) {
     gl.linkProgram(prog);
     gl.useProgram(prog);
 
-    // Fullscreen quad
     const buf = gl.createBuffer()!;
     gl.bindBuffer(gl.ARRAY_BUFFER, buf);
     gl.bufferData(
@@ -212,7 +257,6 @@ export default function LiquidOrb({ className = "" }: { className?: string }) {
     const uHasDer = gl.getUniformLocation(prog, "u_hasDerivatives");
     gl.uniform1f(uHasDer, HAS_DERIV);
 
-    // Mouse state (smoothed)
     let mouse = { x: 0.5, y: 0.5 };
     let mouseSmooth = { x: 0.5, y: 0.5 };
     let hover = 0;
@@ -220,13 +264,11 @@ export default function LiquidOrb({ className = "" }: { className?: string }) {
 
     const updateMouseFromEvent = (e: PointerEvent) => {
       const r = canvas.getBoundingClientRect();
-      // Prevent division by 0 if layout not ready
       if (r.width <= 1 || r.height <= 1) return;
 
       mouse.x = (e.clientX - r.left) / r.width;
       mouse.y = 1 - (e.clientY - r.top) / r.height;
 
-      // clamp
       mouse.x = Math.max(0, Math.min(1, mouse.x));
       mouse.y = Math.max(0, Math.min(1, mouse.y));
     };
@@ -260,7 +302,6 @@ export default function LiquidOrb({ className = "" }: { className?: string }) {
       }
     };
 
-    // Observe size changes of the canvas in layout
     const ro = new ResizeObserver(resize);
     ro.observe(canvas);
     resize();
@@ -278,7 +319,6 @@ export default function LiquidOrb({ className = "" }: { className?: string }) {
     const render = () => {
       if (!running) return;
 
-      // Smooth hover + mouse
       hover += (hoverTarget - hover) * 0.08;
       mouseSmooth.x += (mouse.x - mouseSmooth.x) * 0.12;
       mouseSmooth.y += (mouse.y - mouseSmooth.y) * 0.12;
