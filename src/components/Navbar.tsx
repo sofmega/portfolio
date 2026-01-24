@@ -1,7 +1,6 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
+import ThemeToggle from "@/components/ThemeProvider";
 
 const links = [
   { label: "Home", href: "#home" },
@@ -12,8 +11,6 @@ const links = [
 ];
 
 export default function Navbar() {
-  const { theme, setTheme } = useTheme();
-
   return (
     <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur bg-black/40 border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -30,14 +27,7 @@ export default function Navbar() {
             </a>
           ))}
 
-          <button
-            type="button"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="p-2 rounded-lg border border-white/10 hover:bg-white/10 text-white"
-            aria-label="Toggle theme"
-          >
-            {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
-          </button>
+          <ThemeToggle />
         </div>
       </div>
     </nav>

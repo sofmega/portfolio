@@ -1,7 +1,8 @@
-import { ThemeProvider } from "next-themes";
 import "./globals.css";
+import type { ReactNode } from "react";
+import { ThemeProvider } from "next-themes";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
