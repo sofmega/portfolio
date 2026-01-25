@@ -198,10 +198,17 @@ void main(){
    COMPONENT
 ========================= */
 
-export default function LiquidOrb({ className = "" }: { className?: string }) {
+export default function LiquidOrb({
+  className = "",
+  active = true,
+}: {
+  className?: string;
+  active?: boolean;
+}) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
+    if (!active) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -347,7 +354,7 @@ export default function LiquidOrb({ className = "" }: { className?: string }) {
       canvas.removeEventListener("pointerleave", onLeave);
       canvas.removeEventListener("pointermove", onMove);
     };
-  }, []);
+  }, [active]);
 
   return (
     <canvas

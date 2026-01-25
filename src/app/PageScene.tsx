@@ -127,6 +127,16 @@ export default function PageScene() {
     return f * e;
   });
 
+  const [orbActive, setOrbActive] = useState(true);
+  useEffect(() => {
+    const unsub = educationFade.on("change", (v) => {
+      if (v <= 0.02) {
+        setOrbActive(false);
+      }
+    });
+    return () => unsub();
+  }, [educationFade]);
+
   useEffect(() => {
     if (phase === "done") {
       const c = animate(enabled, 1, { duration: 0.35, ease: [0.2, 0.8, 0.2, 1] });
@@ -176,7 +186,7 @@ export default function PageScene() {
           borderRadius: 9999,
         }}
       >
-        <LiquidOrb className="h-full w-full" />
+        <LiquidOrb className="h-full w-full" active={orbActive} />
       </motion.div>
 
       {/* =========================
@@ -242,30 +252,33 @@ export default function PageScene() {
           <div>
             <div className="flex flex-wrap items-baseline justify-between gap-2">
               <div className="text-lg font-medium text-black">
-                Ingénieur Support N2 Applicatif · Group Labelvie
+                N2 Support Engineer · LabelVie
               </div>
-              <div className="text-sm text-black/55">Skhirat, Maroc · Jul 2023 - Jul 2024</div>
+              <div className="text-sm text-black/55">Morocco · On-site · Jun 2023 - Jun 2024</div>
             </div>
             <ul className="mt-3 space-y-1 text-sm text-black/70">
-              <li>Handled level 1–2 incidents and user support requests.</li>
-              <li>Built Java features and designed PL/SQL extraction queries.</li>
-              <li>Validated ERP update scenarios with functional testing.</li>
-              <li>Performed diagnostics and delivered improvement recommendations.</li>
+              <li>Managed L1 and L2 incidents for business applications.</li>
+              <li>Processed support requests and data extraction tasks.</li>
+              <li>Developed specific features using Java.</li>
+              <li>Designed and implemented PL/SQL extraction queries.</li>
+              <li>Performed functional validation through user scenario testing for ERP system upgrades.</li>
+              <li>Conducted in-depth diagnostics and provided improvement recommendations.</li>
             </ul>
           </div>
 
           <div>
             <div className="flex flex-wrap items-baseline justify-between gap-2">
               <div className="text-lg font-medium text-black">
-                Consultant technico-fonctionnel ServiceNow (PFE) · DXC Technology
+                Consultant technico-fonctionnel ServiceNow · DXC Technology
               </div>
-              <div className="text-sm text-black/55">Rabat, Maroc · Apr 2022 - Sep 2022</div>
+              <div className="text-sm text-black/55">Rabat, Rabat-Salé-Kénitra, Morocco · Remote · Apr 2022 - Sep 2022</div>
             </div>
             <ul className="mt-3 space-y-1 text-sm text-black/70">
-              <li>Delivered a content management system on ServiceNow for conferences and articles.</li>
-              <li>Designed data models in Merise and built workflows with Flow Designer.</li>
-              <li>Implemented Virtual Agent, MFA/OKTA, approvals, notifications, and record producers.</li>
-              <li>Tested, delivered, and validated the final release.</li>
+              <li>Completed full ServiceNow training and certification preparation.</li>
+              <li>Analyzed and designed application models using MERISE methodology.</li>
+              <li>Participated in project kick-off meetings.</li>
+              <li>Developed ServiceNow features including Virtual Agent, MFA (OKTA Verify), approvals, notifications, record producers, plugins, Flow Designer, and scripting (JavaScript).</li>
+              <li>Performed testing, deployment, final delivery, and validation of the application.</li>
             </ul>
           </div>
         </div>
@@ -292,34 +305,61 @@ export default function PageScene() {
           </div>
 
           <div className="grid gap-6 md:grid-cols-2">
-            <div className="rounded-2xl border border-black/10 bg-white/40 p-5">
-              <div className="text-sm tracking-[0.2em] text-black/50">SAAS PLATFORM</div>
-              <h3 className="mt-2 text-lg font-medium text-black">Multi-tenant SaaS for HR & Sales</h3>
+            <a
+              href="https://github.com/sofmega/CinemaBackEnd"
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-2xl border border-black/10 bg-white/40 p-5 transition hover:bg-white/60"
+            >
+              <div className="text-sm tracking-[0.2em] text-black/50">SPRING BOOT</div>
+              <h3 className="mt-2 text-lg font-medium text-black">CinemaBackEnd</h3>
               <p className="mt-3 text-sm text-black/65">
-                Built a production platform used by 50+ clients with secure auth, dashboards, and CI/CD-backed releases.
+                Spring Boot + JPA REST API for cinema management and ticketing, featuring rich domain modeling, data
+                seeding, and transactional seat reservation.
               </p>
-            </div>
-            <div className="rounded-2xl border border-black/10 bg-white/40 p-5">
-              <div className="text-sm tracking-[0.2em] text-black/50">SERVICENOW</div>
-              <h3 className="mt-2 text-lg font-medium text-black">Content Management System</h3>
+            </a>
+
+            <a
+              href="https://github.com/sofmega/CinemaFrontEnd"
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-2xl border border-black/10 bg-white/40 p-5 transition hover:bg-white/60"
+            >
+              <div className="text-sm tracking-[0.2em] text-black/50">ANGULAR</div>
+              <h3 className="mt-2 text-lg font-medium text-black">CinemaFrontEnd</h3>
               <p className="mt-3 text-sm text-black/65">
-                Delivered a ServiceNow SGC with approvals, notifications, and workflow automation for conferences.
+                Angular SPA that consumes the CinemaBackEnd API to browse cinemas, showtimes, and seats with real-time
+                ticket reservation flow.
               </p>
-            </div>
-            <div className="rounded-2xl border border-black/10 bg-white/40 p-5">
-              <div className="text-sm tracking-[0.2em] text-black/50">ERP</div>
-              <h3 className="mt-2 text-lg font-medium text-black">ERP Update Validation</h3>
+            </a>
+
+            <a
+              href="https://github.com/sofmega/CV_generator"
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-2xl border border-black/10 bg-white/40 p-5 transition hover:bg-white/60"
+            >
+              <div className="text-sm tracking-[0.2em] text-black/50">FULL STACK</div>
+              <h3 className="mt-2 text-lg font-medium text-black">CV_generator</h3>
               <p className="mt-3 text-sm text-black/65">
-                Led scenario testing and data extraction (PL/SQL) to validate an ERP upgrade.
+                Production-ready CV/cover letter generator built with React, Node/Express, Supabase, and Stripe—AI text
+                + PDF rendering included.
               </p>
-            </div>
-            <div className="rounded-2xl border border-black/10 bg-white/40 p-5">
-              <div className="text-sm tracking-[0.2em] text-black/50">QUALITY</div>
-              <h3 className="mt-2 text-lg font-medium text-black">CI/CD & QA Enablement</h3>
+            </a>
+
+            <a
+              href="https://github.com/sofmega/RPG_Game"
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-2xl border border-black/10 bg-white/40 p-5 transition hover:bg-white/60"
+            >
+              <div className="text-sm tracking-[0.2em] text-black/50">JAVA / JAVAFX</div>
+              <h3 className="mt-2 text-lg font-medium text-black">RPG_Game</h3>
               <p className="mt-3 text-sm text-black/65">
-                Implemented automated tests, code reviews, and release gates to improve delivery quality.
+                RPG prototype in Java/JavaFX showcasing clean OOP design, layered architecture, and a playable combat
+                loop (character creation → battle).
               </p>
-            </div>
+            </a>
           </div>
         </div>
       </Section>
