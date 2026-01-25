@@ -3,6 +3,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion, animate, useMotionValue, type Variants } from "framer-motion";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import Rings from "@/components/Rings";
 
 function clamp01(n: number) {
@@ -15,58 +16,13 @@ function clamp01(n: number) {
 
 function PlusMark({ progress }: { progress: number }) {
   const p = clamp01(progress);
-  const size = 220;
-  const thickness = 56;
-  const radius = 28;
-
   return (
-    <div className="relative h-[220px] w-[220px]" aria-hidden="true">
-      <div
-        className="absolute left-1/2 top-0 -translate-x-1/2"
-        style={{
-          width: thickness,
-          height: size,
-          borderRadius: radius,
-          border: "2px solid rgba(0,0,0,0.10)",
-        }}
-      />
-      <div
-        className="absolute left-0 top-1/2 -translate-y-1/2"
-        style={{
-          width: size,
-          height: thickness,
-          borderRadius: radius,
-          border: "2px solid rgba(0,0,0,0.10)",
-        }}
-      />
-
-      <div className="absolute inset-0">
-        <div
-          className="absolute left-1/2 bottom-0 -translate-x-1/2 bg-black/95"
-          style={{
-            width: thickness,
-            height: size * p,
-            borderRadius: radius,
-          }}
-        />
-        <div
-          className="absolute left-0 bottom-[calc(50%-34px)] bg-black/95"
-          style={{
-            width: size,
-            height: thickness * p,
-            borderRadius: radius,
-            transformOrigin: "left center",
-          }}
-        />
-      </div>
-
-      <div
-        className="absolute left-0 top-1/2 -translate-y-1/2 bg-black/95"
-        style={{
-          width: size * clamp01((p - 0.25) / 0.75),
-          height: thickness,
-          borderRadius: radius,
-        }}
+    <div className="relative h-[180px] w-[180px]" aria-hidden="true">
+      <DotLottieReact
+        src="/loading.lottie"
+        autoplay
+        loop
+        className="h-[180px] w-[180px]"
       />
     </div>
   );
@@ -227,10 +183,7 @@ export default function HeroIntro({ onPhase }: { onPhase?: (p: HeroPhase) => voi
               <PlusMark progress={p01} />
 
               <div className="flex flex-col items-center gap-4">
-                {/* ONLY the circle now */}
-                <BuildCircle progress={p01} />
-
-                <div className="flex items-center gap-4 text-xs tracking-widest text-black/60">
+                <div className="flex items-center gap-4 text-xs tracking-widest text-black/60 translate-x-8">
                   <span>BUILD</span>
                   <span className="tabular-nums">{Math.round(progress)}</span>
                 </div>
@@ -239,6 +192,19 @@ export default function HeroIntro({ onPhase }: { onPhase?: (p: HeroPhase) => voi
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* single circle that grows into the orb */}
+      {(phase === "loading" || phase === "morph") && (
+        <motion.div
+          className="pointer-events-none absolute left-1/2 top-1/2 z-30 h-[44px] w-[44px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-black"
+          animate={{
+            scale: phase === "loading" ? 0.2 + p01 * 0.9 : 11,
+            opacity: phase === "loading" ? 1 : 0,
+          }}
+          transition={{ ease: [0.2, 0.8, 0.2, 1], duration: phase === "loading" ? 0.2 : 1.1 }}
+          style={{ x: 80 }}
+        />
+      )}
 
       {/* text shows while morph + after */}
       <AnimatePresence>
@@ -254,6 +220,7 @@ export default function HeroIntro({ onPhase }: { onPhase?: (p: HeroPhase) => voi
           </motion.div>
         )}
       </AnimatePresence>
+
 
       {phase === "done" && <FallingText />}
     </section>

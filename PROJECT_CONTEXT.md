@@ -15,6 +15,7 @@ This is a personal portfolio built with Next.js App Router and TypeScript. The U
 - Animation: Framer Motion (v12.26.2)
 - Theming: `next-themes` (v0.4.6, class-based theme toggle)
 - Icons: `lucide-react` (v0.562.0)
+- Lottie: `@lottiefiles/dotlottie-react` (loader animation)
 - WebGL: Custom shader-driven canvas in `src/components/LiquidOrb.tsx`
 - Canvas 2D: Code rain effect in `src/components/CodeRain.tsx`
 - Utilities: `clsx` (v2.1.1)
