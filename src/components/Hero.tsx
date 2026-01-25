@@ -1,6 +1,6 @@
 // src/components/Hero.tsx
-import HeroIntro from "@/components/HeroIntro";
+import HeroIntro, { type HeroPhase } from "@/components/HeroIntro";
 
-export default function Hero() {
-  return <HeroIntro />;
+export default function Hero({ onPhase }: { onPhase?: (p: HeroPhase) => void }) {
+  return <HeroIntro onPhase={onPhase} />;
 }

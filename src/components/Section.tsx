@@ -4,9 +4,12 @@ import Reveal from "@/components/Reveal";
 type SectionProps = {
   id: string;
   eyebrow: string; // small label (ABOUT, PROJECTS...)
-  title: string;   // main heading
+  title: string; // main heading
   subtitle?: string; // optional short text on the right
   children: React.ReactNode;
+
+  // ✅ NEW: center mode for "About" (or any section)
+  center?: boolean;
 };
 
 export default function Section({
@@ -15,6 +18,7 @@ export default function Section({
   title,
   subtitle,
   children,
+  center = false,
 }: SectionProps) {
   return (
     <section
@@ -23,8 +27,13 @@ export default function Section({
     >
       <div className="mx-auto max-w-6xl">
         {/* Header */}
-        <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div>
+        <div
+          className={[
+            "mb-10 flex flex-col gap-6 md:items-end",
+            center ? "md:items-center md:justify-center" : "md:flex-row md:justify-between",
+          ].join(" ")}
+        >
+          <div className={center ? "text-center" : ""}>
             <Reveal>
               <p className="text-xs tracking-[0.25em] text-black/50">
                 {eyebrow}
@@ -37,7 +46,10 @@ export default function Section({
 
           {subtitle ? (
             <Reveal delay={0.06}>
-              <p className="max-w-md text-sm leading-relaxed text-black/60">
+              <p className={center
+                ? "max-w-2xl text-center text-sm leading-relaxed text-black/60"
+                : "max-w-md text-sm leading-relaxed text-black/60"
+              }>
                 {subtitle}
               </p>
             </Reveal>
@@ -45,7 +57,9 @@ export default function Section({
         </div>
 
         {/* Content */}
-        <Reveal delay={0.1}>{children}</Reveal>
+        <div className={center ? "mx-auto max-w-4xl text-center" : ""}>
+          <Reveal delay={0.1}>{children}</Reveal>
+        </div>
       </div>
     </section>
   );

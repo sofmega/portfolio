@@ -10,7 +10,8 @@ This is a modern web application built with [Next.js](https://nextjs.org/), a Re
 
 *   **Framework**: [Next.js](https://nextjs.org/) (v14 or later, using the App Router)
 *   **Language**: [TypeScript](https://www.typescriptlang.org/)
-*   **Styling**: [Tailwind CSS](https://tailwindcss.com/) (likely, given PostCSS) and global CSS. PostCSS is used for CSS transformations.
+*   **Animation**: [Framer Motion](https://www.framer.com/motion/) for performant and complex animations.
+*   **Styling**: [Tailwind CSS](https://tailwindcss.com/) with PostCSS for CSS transformations and utility-first styling.
 *   **Linting**: [ESLint](httpss://eslint.org/) for code quality and consistency.
 *   **Package Manager**: [npm](https://www.npmjs.com/)
 
