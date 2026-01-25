@@ -1,3 +1,4 @@
+// src/components/LiquidOrb.tsx
 "use client";
 
 import { useEffect, useRef } from "react";
@@ -76,30 +77,30 @@ float luma(vec3 c){
 vec3 offbrandPalette(float t){
   t = fract(t);
 
-  // “paper + ink” neutrals with subtle tint stops
-  vec3 paper  = vec3(0.95, 0.93, 0.90); // warm off-white
-  vec3 ice    = vec3(0.78, 0.88, 0.93); // soft ice blue
-  vec3 lilac  = vec3(0.83, 0.82, 0.93); // muted lavender
-  vec3 sand   = vec3(0.93, 0.88, 0.78); // warm sand
-  vec3 mist   = vec3(0.90, 0.91, 0.92); // cool mist gray
+  // paper + graphite neutrals
+  vec3 paper  = vec3(0.95, 0.94, 0.92);
+  vec3 stone  = vec3(0.86, 0.86, 0.84);
+  vec3 warm   = vec3(0.93, 0.89, 0.83);
+  vec3 cool   = vec3(0.88, 0.90, 0.92);
+  vec3 ink    = vec3(0.25, 0.25, 0.25);
 
   vec3 col;
   if (t < 0.25) {
-    col = mix(paper, mist, sCurve(t / 0.25));
+    col = mix(paper, stone, sCurve(t / 0.25));
   } else if (t < 0.50) {
-    col = mix(mist, ice, sCurve((t - 0.25) / 0.25));
+    col = mix(stone, cool, sCurve((t - 0.25) / 0.25));
   } else if (t < 0.75) {
-    col = mix(ice, lilac, sCurve((t - 0.50) / 0.25));
+    col = mix(cool, warm, sCurve((t - 0.50) / 0.25));
   } else {
-    col = mix(lilac, sand, sCurve((t - 0.75) / 0.25));
+    col = mix(warm, ink, sCurve((t - 0.75) / 0.25));
   }
 
-  // reduce saturation = more “editorial”
+  // reduce saturation = more editorial
   float g = luma(col);
-  col = mix(vec3(g), col, 0.62);
+  col = mix(vec3(g), col, 0.45);
 
   // slightly milky
-  col = mix(col, vec3(1.0), 0.05);
+  col = mix(col, vec3(1.0), 0.04);
   return col;
 }
 
@@ -170,13 +171,13 @@ void main(){
   vec2 light = normalize(vec2(-0.55, 0.85));
 
   float ndl = max(0.0, dot(nn, light));
-  float spec = pow(ndl, 22.0);
+  float spec = pow(ndl, 20.0);
 
   // glossy highlight (clean)
-  col += 0.08 * spec;
+  col += 0.05 * spec;
 
   // milky rim
-  col += 0.18 * rim;
+  col += 0.12 * rim;
 
   // gentle “ink shadow” toward edges
   col *= mix(1.0, 0.90, r * r);

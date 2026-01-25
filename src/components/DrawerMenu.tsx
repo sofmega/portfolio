@@ -36,14 +36,14 @@ export default function DrawerMenu({ open, onClose }: DrawerMenuProps) {
 
           {/* panel */}
           <motion.aside
-            className="fixed right-6 top-28 z-[70] w-[320px] rounded-2xl border border-black/10 bg-[#f3f1ec]/90 backdrop-blur p-4 shadow-[0_20px_70px_rgba(0,0,0,0.12)]"
+            className="fixed right-6 top-28 z-[70] w-[320px] rounded-2xl border border-black/15 bg-[#f5f3ef]/90 backdrop-blur p-4 shadow-[0_20px_70px_rgba(0,0,0,0.12)]"
             initial={{ x: 40, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: 40, opacity: 0 }}
             transition={{ type: "spring", stiffness: 260, damping: 22 }}
           >
             <div className="flex items-center justify-between">
-              <span className="text-xs tracking-widest text-black/60">MENU</span>
+              <span className="text-[11px] tracking-[0.35em] text-black/55">MENU</span>
               <button
                 type="button"
                 onClick={onClose}
@@ -60,7 +60,7 @@ export default function DrawerMenu({ open, onClose }: DrawerMenuProps) {
                   key={s.href}
                   href={s.href}
                   onClick={onClose}
-                  className="group flex items-center justify-between py-3 text-sm text-black/80 hover:text-black"
+                  className="group flex items-center justify-between py-3 text-sm tracking-[0.08em] text-black/80 hover:text-black"
                 >
                   <span className="relative">
                     {s.label}

@@ -96,12 +96,12 @@ export default function PageScene() {
           SINGLE GLOBAL ORB
       ========================= */}
       <motion.div
-        className="pointer-events-none fixed left-1/2 top-1/2 z-10"
-        initial={{ opacity: 0, width: "70px", height: "70px" }}
+        className="pointer-events-none fixed left-1/2 top-1/2 z-10 mix-blend-multiply"
+        initial={{ opacity: 0, width: "80px", height: "80px" }}
         animate={{
           opacity: phase === "loading" ? 0 : 1,
-          width: phase === "loading" ? "70px" : "min(520px,72vw)",
-          height: phase === "loading" ? "70px" : "min(520px,72vw)",
+          width: phase === "loading" ? "80px" : "min(560px,78vw)",
+          height: phase === "loading" ? "80px" : "min(560px,78vw)",
         }}
         transition={{ duration: 1.15, ease: [0.2, 0.8, 0.2, 1] }}
         style={{
@@ -153,10 +153,10 @@ export default function PageScene() {
         id="experience"
         eyebrow="EXPERIENCE"
         title="Building systems that ship."
-        subtitle="ServiceNow, Java full-stack, and workflow-heavy products — delivered with clarity and maintainability."
+        subtitle="ServiceNow, Java full-stack, and workflow-heavy products - delivered with clarity and maintainability."
       >
         <div className="text-black/70">
-          Add your timeline here (we’ll convert your CV into a clean timeline next).
+          Add your timeline here (we'll convert your CV into a clean timeline next).
         </div>
       </Section>
 
@@ -167,7 +167,7 @@ export default function PageScene() {
         subtitle="A curated set of projects focused on real-world constraints, performance, and polish."
       >
         <div className="text-black/70">
-          Add your project cards here (I’ll give you premium cards that match your hero).
+          Add your project cards here (I'll give you premium cards that match your hero).
         </div>
       </Section>
 
@@ -183,7 +183,7 @@ export default function PageScene() {
       <Section
         id="contact"
         eyebrow="CONTACT"
-        title="Let’s build something."
+        title="Let's build something."
         subtitle="Open to full-stack roles, product engineering, and modern frontend work."
       >
         <p className="text-black/70">Email: your@email.com • LinkedIn • GitHub</p>

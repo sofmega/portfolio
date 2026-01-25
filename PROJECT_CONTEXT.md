@@ -1,69 +1,73 @@
 # Project Context for LLMs
 
-This document provides an overview of the project structure, technologies, and conventions to help Large Language Models (LLMs) understand and assist with development.
+This document summarizes the tools and technologies actually used in this repo so another LLM can orient quickly.
 
 ## Project Overview
 
-This is a modern web application built with [Next.js](https://nextjs.org/), a React framework for building server-rendered and statically generated web applications. The project uses [TypeScript](https://www.typescriptlang.org/) for type safety and modern JavaScript features.
+This is a personal portfolio built with Next.js App Router and TypeScript. The UI relies on Framer Motion for animation, Tailwind CSS for styling, and a custom WebGL shader for the liquid orb visual.
 
-## Technologies, Frameworks, and Libraries
+## Technologies, Frameworks, and Libraries (In Use)
 
-*   **Framework**: [Next.js](https://nextjs.org/) (v14 or later, using the App Router)
-*   **Language**: [TypeScript](https://www.typescriptlang.org/)
-*   **Animation**: [Framer Motion](https://www.framer.com/motion/) for performant and complex animations.
-*   **Styling**: [Tailwind CSS](https://tailwindcss.com/) with PostCSS for CSS transformations and utility-first styling.
-*   **Linting**: [ESLint](httpss://eslint.org/) for code quality and consistency.
-*   **Package Manager**: [npm](https://www.npmjs.com/)
+- Framework: Next.js (v15.1.3, App Router in `src/app`)
+- Language: TypeScript (v5.5.4)
+- UI Library: React (v18.3.1)
+- Styling: Tailwind CSS (v4, via `@import "tailwindcss";` in `src/app/globals.css`)
+- Animation: Framer Motion (v12.26.2)
+- Theming: `next-themes` (v0.4.6, class-based theme toggle)
+- Icons: `lucide-react` (v0.562.0)
+- WebGL: Custom shader-driven canvas in `src/components/LiquidOrb.tsx`
+- Canvas 2D: Code rain effect in `src/components/CodeRain.tsx`
+- Utilities: `clsx` (v2.1.1)
+- Linting: ESLint (v9 + `eslint-config-next` v15.1.3)
+- Package Manager: npm (`package-lock.json`)
 
-## Project Structure
-
-The project follows the standard structure for a Next.js application using the App Router.
+## Project Structure (Actual)
 
 ```
 .
-├── .next/         # Next.js build output
-├── node_modules/  # Project dependencies
-├── public/        # Static assets (images, fonts, etc.)
-│   ├── file.svg
-│   ├── globe.svg
-│   ├── next.svg
-│   └── profile.png
-├── src/           # Main source code
-│   ├── app/       # Next.js App Router directory
+├── .next/               # Next.js build output
+├── node_modules/        # Project dependencies
+├── public/              # Static assets
+├── src/                 # Main source code
+│   ├── app/             # Next.js App Router
 │   │   ├── favicon.ico
-│   │   ├── globals.css # Global stylesheets
-│   │   ├── layout.tsx  # Root layout component
-│   │   └── page.tsx    # Main page component (route: /)
-│   ├── components/  # Reusable React components
+│   │   ├── globals.css  # Global styles (Tailwind import + theme vars)
+│   │   ├── layout.tsx   # Root layout + ThemeProvider + CustomCursor
+│   │   ├── page.tsx     # Root page
+│   │   └── PageScene.tsx # Main scene with orb + sections
+│   ├── components/      # Reusable React components
 │   │   ├── CodeRain.tsx
-│   │   ├── Hero.tsx
-│   │   └── Navbar.tsx
-│   └── type/        # TypeScript type definitions
+│   │   ├── CustomCursor.tsx
+│   │   ├── DrawerMenu.tsx
+│   │   ├── HeroIntro.tsx
+│   │   ├── LiquidOrb.tsx
+│   │   ├── Navbar.tsx
+│   │   ├── OrbMaskedText.tsx
+│   │   ├── Rings.tsx
+│   │   ├── Section.tsx
+│   │   └── ThemeSwitch.tsx
+│   └── type/
 │       └── css.d.ts
-├── .gitignore       # Files and folders to be ignored by Git
-├── eslint.config.mjs # ESLint configuration
-├── next.config.ts   # Next.js configuration
-├── package.json     # Project metadata and dependencies
-├── postcss.config.mjs # PostCSS configuration
-├── README.md        # Project documentation
-└── tsconfig.json    # TypeScript compiler configuration
+├── eslint.config.mjs
+├── next.config.ts
+├── package.json
+├── postcss.config.mjs
+├── README.md
+└── tsconfig.json
 ```
-
-### Key Directories
-
-*   **`./public`**: Contains static assets that are publicly accessible, such as images, svgs, and fonts.
-*   **`./src/app`**: This is the core of the Next.js application, using the App Router paradigm.
-    *   `layout.tsx`: The root layout that wraps all pages. It's used to define the global HTML structure (e.g., `<html>` and `<body>` tags) and share UI elements like headers and footers.
-    *   `page.tsx`: The main entry point for the root URL (`/`).
-    *   `globals.css`: Global CSS styles applied to the entire application.
-*   **`./src/components`**: This directory should contain all reusable React components. The components are well-organized and have specific purposes (e.g., `Navbar`, `Hero`).
-*   **`./src/type`**: Home for custom TypeScript type definitions.
 
 ## How to Work with the Code
 
-*   **Adding new pages**: Create new folders inside `src/app` with a `page.tsx` file.
-*   **Adding new components**: Create new `.tsx` files inside `src/components`.
-*   **Styling**: Primarily use utility classes from Tailwind CSS. For global styles, modify `src/app/globals.css`.
-*   **Dependencies**: Use `npm install` to add new dependencies.
+- Adding new pages: Create new folders inside `src/app` with a `page.tsx` file.
+- Adding new components: Create new `.tsx` files inside `src/components`.
+- Styling: Use Tailwind classes in JSX; global variables and theme styles live in `src/app/globals.css`.
+- Animation: Use Framer Motion for transitions; prefer animating `transform` and `opacity`.
+- Theming: Theme toggling uses `next-themes` with class-based dark mode.
+- Dependencies: Use `npm install` to add packages.
 
-This context should guide you in understanding the codebase and making changes that align with the project's architecture and conventions.
+## Common Commands
+
+- Dev server: `npm run dev`
+- Production build: `npm run build`
+- Start production: `npm run start`
+- Lint: `npm run lint`

@@ -15,16 +15,17 @@ function clamp01(n: number) {
 
 function PlusMark({ progress }: { progress: number }) {
   const p = clamp01(progress);
-  const thickness = 68;
-  const radius = 34;
+  const size = 220;
+  const thickness = 56;
+  const radius = 28;
 
   return (
-    <div className="relative h-[240px] w-[240px]" aria-hidden="true">
+    <div className="relative h-[220px] w-[220px]" aria-hidden="true">
       <div
         className="absolute left-1/2 top-0 -translate-x-1/2"
         style={{
           width: thickness,
-          height: 240,
+          height: size,
           borderRadius: radius,
           border: "2px solid rgba(0,0,0,0.10)",
         }}
@@ -32,7 +33,7 @@ function PlusMark({ progress }: { progress: number }) {
       <div
         className="absolute left-0 top-1/2 -translate-y-1/2"
         style={{
-          width: 240,
+          width: size,
           height: thickness,
           borderRadius: radius,
           border: "2px solid rgba(0,0,0,0.10)",
@@ -44,14 +45,14 @@ function PlusMark({ progress }: { progress: number }) {
           className="absolute left-1/2 bottom-0 -translate-x-1/2 bg-black/95"
           style={{
             width: thickness,
-            height: 240 * p,
+            height: size * p,
             borderRadius: radius,
           }}
         />
         <div
           className="absolute left-0 bottom-[calc(50%-34px)] bg-black/95"
           style={{
-            width: 240,
+            width: size,
             height: thickness * p,
             borderRadius: radius,
             transformOrigin: "left center",
@@ -62,7 +63,7 @@ function PlusMark({ progress }: { progress: number }) {
       <div
         className="absolute left-0 top-1/2 -translate-y-1/2 bg-black/95"
         style={{
-          width: 240 * clamp01((p - 0.25) / 0.75),
+          width: size * clamp01((p - 0.25) / 0.75),
           height: thickness,
           borderRadius: radius,
         }}
@@ -74,8 +75,8 @@ function PlusMark({ progress }: { progress: number }) {
 function BuildCircle({ progress }: { progress: number }) {
   const p = clamp01(progress);
   return (
-    <div className="relative h-[70px] w-[70px]" aria-hidden="true">
-      <div className="absolute inset-0 rounded-full border border-black/15" />
+    <div className="relative h-[64px] w-[64px]" aria-hidden="true">
+      <div className="absolute inset-0 rounded-full border border-black/20" />
       <div className="absolute inset-0 overflow-hidden rounded-full">
         <div className="absolute bottom-0 left-0 right-0 bg-black/95" style={{ height: `${p * 100}%` }} />
       </div>
@@ -102,8 +103,9 @@ const charVariants: Variants = {
 };
 
 function FallingText() {
-  const big = "text-[clamp(56px,7.5vw,132px)] font-medium tracking-tight leading-[0.9]";
-  const navy = "text-[#0b1020]";
+  const big = "text-[clamp(52px,7vw,128px)] font-medium tracking-tight leading-[0.92]";
+  const ink = "text-black";
+  const muted = "text-black/55";
 
   const makeChars = (word: string) =>
     word.split("").map((c, i) => (
@@ -118,34 +120,48 @@ function FallingText() {
         initial={{ opacity: 0, y: -6 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="pt-28 text-sm text-black/60"
+        className="pt-24 text-[11px] tracking-[0.35em] text-black/55"
       >
-        Soufiane Radouane • Software Engineer • React / TypeScript / Node.js
+        SOUFIANE RADOUANE - PRODUCT-MINDED SOFTWARE ENGINEER
       </motion.p>
 
       <div className="absolute inset-0 mx-auto max-w-7xl px-6 md:px-10">
-        <div className="grid h-full grid-cols-12 grid-rows-[1fr_auto_1fr] items-center">
-          <motion.h1 className={`col-span-8 row-start-1 self-end ${big}`} variants={wordVariants} initial="hidden" animate="show">
-            {makeChars("BUILDING")}
-          </motion.h1>
-
-          <motion.h2
-            className={`col-span-6 col-start-7 row-start-2 justify-self-end ${big} ${navy}`}
+        <div className="grid h-full grid-cols-12 grid-rows-[1fr_auto_auto_1fr] items-center">
+          <motion.h1
+            className={`col-span-10 row-start-1 self-end ${big} ${ink}`}
             variants={wordVariants}
             initial="hidden"
             animate="show"
           >
-            {makeChars("MODERN")}
+            {makeChars("PRODUCT")}
+          </motion.h1>
+
+          <motion.h2
+            className={`col-span-12 row-start-2 ${big} ${ink}`}
+            variants={wordVariants}
+            initial="hidden"
+            animate="show"
+          >
+            {makeChars("ENGINEERING")}
           </motion.h2>
 
-          <motion.h3 className={`col-span-10 row-start-3 self-start ${big}`} variants={wordVariants} initial="hidden" animate="show">
-            {makeChars("EXPERIENCES")}
+          <motion.h3
+            className={`col-span-10 row-start-3 self-start ${big} ${ink}`}
+            variants={wordVariants}
+            initial="hidden"
+            animate="show"
+          >
+            {makeChars("STUDIO")}
           </motion.h3>
+
+          <div className="col-span-5 col-start-8 row-start-4 mt-8 text-sm leading-relaxed text-black/60">
+            Crafting modern interfaces with an editorial rhythm, clean systems, and animation that feels deliberate.
+          </div>
         </div>
       </div>
 
-      <div className="absolute bottom-10 left-10 h-2 w-2 rounded-full bg-black/80" />
-      <div className="absolute bottom-10 right-10 text-xs tracking-widest text-black/50">SCROLL ↓</div>
+      <div className="absolute bottom-10 left-10 h-[6px] w-[6px] rounded-full bg-black/80" />
+      <div className={`absolute bottom-10 right-10 text-[11px] tracking-[0.35em] ${muted}`}>SCROLL ↓</div>
     </div>
   );
 }
@@ -192,7 +208,7 @@ export default function HeroIntro({ onPhase }: { onPhase?: (p: HeroPhase) => voi
   const p01 = useMemo(() => clamp01(progress / 100), [progress]);
 
   return (
-    <section id="home" className="relative min-h-[100svh] overflow-hidden bg-[#f3f1ec] text-black">
+    <section id="home" className="relative min-h-[100svh] overflow-hidden bg-[var(--bg)] text-black">
       {/* rings behind */}
       <div className="pointer-events-none absolute inset-0 z-0">
         <Rings />

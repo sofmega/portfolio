@@ -23,7 +23,7 @@ export default function Section({
   return (
     <section
       id={id}
-      className="bg-[#f3f1ec] px-6 md:px-10 py-28 border-t border-black/10"
+      className="bg-[var(--bg)] px-6 md:px-10 py-28 border-t border-[color:var(--hairline)]"
     >
       <div className="mx-auto max-w-6xl">
         {/* Header */}
@@ -35,10 +35,10 @@ export default function Section({
         >
           <div className={center ? "text-center" : ""}>
             <Reveal>
-              <p className="text-xs tracking-[0.25em] text-black/50">
+              <p className="text-[11px] tracking-[0.35em] text-black/55">
                 {eyebrow}
               </p>
-              <h2 className="mt-3 text-4xl md:text-5xl font-medium tracking-tight text-black">
+              <h2 className="mt-3 text-[clamp(28px,4vw,56px)] font-medium tracking-tight text-black">
                 {title}
               </h2>
             </Reveal>

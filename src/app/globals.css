@@ -4,15 +4,15 @@
    THEME VARIABLES
 ========================= */
 
-/* Light theme (default) */
+/* Light theme (default) — cream/paper */
 :root {
-  --bg: #f3f1ec;
-  --fg: #0b1020;
-  --muted: rgba(11, 16, 32, 0.6);
+  --bg: #f3f1ec;              /* cream background like your screenshot */
+  --fg: #0b0b0b;              /* strong black text */
+  --muted: rgba(11, 11, 11, 0.6);
   --hairline: rgba(0, 0, 0, 0.10);
 }
 
-/* Dark theme */
+/* Dark theme (optional) */
 .dark {
   --bg: #07080a;
   --fg: rgba(255, 255, 255, 0.92);
@@ -66,7 +66,6 @@ body::before {
 
 /* =========================
    CUSTOM CURSOR
-   (hide system cursor on desktop only)
 ========================= */
 
 @media (pointer: fine) {
