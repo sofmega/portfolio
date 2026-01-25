@@ -134,12 +134,12 @@ export default function PageScene() {
         >
           <p>
             <span className="font-medium text-black">Recently graduated software engineer</span>{" "}
-            with a strong focus on modern web development.
+            with 2 years of professional experience and a strong focus on modern web development.
             <br />
             <br />
             Experienced in building production-ready applications using{" "}
             <span className="font-medium text-black">React, TypeScript, JavaScript, Node.js</span>, PostgreSQL, and CI/CD
-            pipelines.
+            pipelines, plus ServiceNow workflow automation.
             <br />
             <br />
             Comfortable working in <span className="font-medium text-black">Agile environments</span>, with strong exposure
@@ -155,8 +155,55 @@ export default function PageScene() {
         title="Building systems that ship."
         subtitle="ServiceNow, Java full-stack, and workflow-heavy products - delivered with clarity and maintainability."
       >
-        <div className="text-black/70">
-          Add your timeline here (we'll convert your CV into a clean timeline next).
+        <div className="space-y-10 text-black/75">
+          <div>
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <div className="text-lg font-medium text-black">
+                Développeur Full-Stack JavaScript (Stage) · E-petitpas Startup
+              </div>
+              <div className="text-sm text-black/55">Argenteuil, France · May 2025 - Nov 2025</div>
+            </div>
+            <p className="mt-2 text-sm text-black/60">
+              Stack: React, TypeScript, Tailwind CSS, Node.js, Express, PostgreSQL (Supabase & Prisma), Jest, JWT,
+              Google Cloud, CI/CD, Nginx
+            </p>
+            <ul className="mt-3 space-y-1 text-sm text-black/70">
+              <li>Built a SaaS platform used by 50+ clients across HR, sales, and operations.</li>
+              <li>Set up CI/CD with automated tests prior to deployment and organized code reviews.</li>
+              <li>Partnered with product and clients for planning, specs, and validation.</li>
+              <li>Acted as quality lead for ticket organization and team support (12 people).</li>
+            </ul>
+          </div>
+
+          <div>
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <div className="text-lg font-medium text-black">
+                Ingénieur Support N2 Applicatif · Group Labelvie
+              </div>
+              <div className="text-sm text-black/55">Skhirat, Maroc · Jul 2023 - Jul 2024</div>
+            </div>
+            <ul className="mt-3 space-y-1 text-sm text-black/70">
+              <li>Handled level 1–2 incidents and user support requests.</li>
+              <li>Built Java features and designed PL/SQL extraction queries.</li>
+              <li>Validated ERP update scenarios with functional testing.</li>
+              <li>Performed diagnostics and delivered improvement recommendations.</li>
+            </ul>
+          </div>
+
+          <div>
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <div className="text-lg font-medium text-black">
+                Consultant technico-fonctionnel ServiceNow (PFE) · DXC Technology
+              </div>
+              <div className="text-sm text-black/55">Rabat, Maroc · Apr 2022 - Sep 2022</div>
+            </div>
+            <ul className="mt-3 space-y-1 text-sm text-black/70">
+              <li>Delivered a content management system on ServiceNow for conferences and articles.</li>
+              <li>Designed data models in Merise and built workflows with Flow Designer.</li>
+              <li>Implemented Virtual Agent, MFA/OKTA, approvals, notifications, and record producers.</li>
+              <li>Tested, delivered, and validated the final release.</li>
+            </ul>
+          </div>
         </div>
       </Section>
 
@@ -166,8 +213,35 @@ export default function PageScene() {
         title="Selected work."
         subtitle="A curated set of projects focused on real-world constraints, performance, and polish."
       >
-        <div className="text-black/70">
-          Add your project cards here (I'll give you premium cards that match your hero).
+        <div className="grid gap-6 md:grid-cols-2">
+          <div className="rounded-2xl border border-black/10 bg-white/40 p-5">
+            <div className="text-sm tracking-[0.2em] text-black/50">SAAS PLATFORM</div>
+            <h3 className="mt-2 text-lg font-medium text-black">Multi-tenant SaaS for HR & Sales</h3>
+            <p className="mt-3 text-sm text-black/65">
+              Built a production platform used by 50+ clients with secure auth, dashboards, and CI/CD-backed releases.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-black/10 bg-white/40 p-5">
+            <div className="text-sm tracking-[0.2em] text-black/50">SERVICENOW</div>
+            <h3 className="mt-2 text-lg font-medium text-black">Content Management System</h3>
+            <p className="mt-3 text-sm text-black/65">
+              Delivered a ServiceNow SGC with approvals, notifications, and workflow automation for conferences.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-black/10 bg-white/40 p-5">
+            <div className="text-sm tracking-[0.2em] text-black/50">ERP</div>
+            <h3 className="mt-2 text-lg font-medium text-black">ERP Update Validation</h3>
+            <p className="mt-3 text-sm text-black/65">
+              Led scenario testing and data extraction (PL/SQL) to validate an ERP upgrade.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-black/10 bg-white/40 p-5">
+            <div className="text-sm tracking-[0.2em] text-black/50">QUALITY</div>
+            <h3 className="mt-2 text-lg font-medium text-black">CI/CD & QA Enablement</h3>
+            <p className="mt-3 text-sm text-black/65">
+              Implemented automated tests, code reviews, and release gates to improve delivery quality.
+            </p>
+          </div>
         </div>
       </Section>
 
@@ -177,7 +251,29 @@ export default function PageScene() {
         title="Foundations & learning."
         subtitle="Engineering background + continuous learning in modern web and infrastructure."
       >
-        <div className="text-black/70">Add your education here.</div>
+        <div className="space-y-6 text-black/75">
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <div className="text-lg font-medium text-black">
+              INGETIS Paris — Master 2, Expert en Architecture & Développement Logiciel
+            </div>
+            <div className="text-sm text-black/55">Sep 2024 - Jul 2025</div>
+          </div>
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <div className="text-lg font-medium text-black">
+              EMSI Casablanca — Ingénieur Informatique & Réseaux (option MIAGE)
+            </div>
+            <div className="text-sm text-black/55">2017 - 2022</div>
+          </div>
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <div className="text-lg font-medium text-black">Lycée El Farabi — Bac Sciences Physiques</div>
+            <div className="text-sm text-black/55">2016 - 2017</div>
+          </div>
+
+          <div className="pt-2 text-sm text-black/60">
+            Certifications: IELTS Academic B2 (2024) · Coursera Java Programming and Software Engineering Fundamentals (2021)
+          </div>
+          <div className="text-sm text-black/60">Languages: French · English · Arabic</div>
+        </div>
       </Section>
 
       <Section
@@ -186,7 +282,13 @@ export default function PageScene() {
         title="Let's build something."
         subtitle="Open to full-stack roles, product engineering, and modern frontend work."
       >
-        <p className="text-black/70">Email: your@email.com • LinkedIn • GitHub</p>
+        <div className="space-y-2 text-black/70">
+          <p>Email: Soufiane.radouane99@gmail.com</p>
+          <p>Phone: 07 45 76 79 13</p>
+          <p>GitHub: github.com/sofmega</p>
+          <p>LinkedIn: /in/soufiane-radouane-9b047220a/</p>
+          <p>Location: Asnières-sur-Seine (92) · Available immediately</p>
+        </div>
       </Section>
     </div>
   );
