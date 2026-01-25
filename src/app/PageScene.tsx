@@ -21,11 +21,11 @@ import type { HeroPhase } from "@/components/HeroIntro";
 
 export default function PageScene() {
   const [phase, setPhase] = useState<HeroPhase>("loading");
-  const pageRef = useRef<HTMLDivElement | null>(null);
+  const aboutRef = useRef<HTMLElement | null>(null);
 
-  const { scrollYProgress } = useScroll({
-    target: pageRef,
-    offset: ["start start", "end end"],
+  const { scrollYProgress: aboutProgress } = useScroll({
+    target: aboutRef,
+    offset: ["start end", "end start"],
   });
 
   /* =========================
@@ -51,9 +51,9 @@ export default function PageScene() {
   /* =========================
      SCROLL MOTION IN PX
   ========================= */
-  const xScrollRawPx = useTransform(scrollYProgress, [0.0, 0.18, 0.34, 1.0], [0, 0, travelX, travelX]);
-  const yScrollRawPx = useTransform(scrollYProgress, [0.0, 0.18, 0.34, 1.0], [0, 0, travelY, travelY]);
-  const scaleScrollRaw = useTransform(scrollYProgress, [0.0, 0.18, 0.34, 1.0], [1, 1, 0.92, 0.92]);
+  const xScrollRawPx = useTransform(aboutProgress, [0.0, 0.2, 1.0], [0, travelX, travelX]);
+  const yScrollRawPx = useTransform(aboutProgress, [0.0, 0.2, 1.0], [0, travelY, travelY]);
+  const scaleScrollRaw = useTransform(aboutProgress, [0.0, 1.0], [1, 1.65]);
 
   const xScrollPx = useSpring(xScrollRawPx, { stiffness: 120, damping: 22, mass: 0.7 });
   const yScrollPx = useSpring(yScrollRawPx, { stiffness: 120, damping: 22, mass: 0.7 });
@@ -91,7 +91,7 @@ export default function PageScene() {
   });
 
   return (
-    <div ref={pageRef} className="relative">
+    <div className="relative">
       {/* =========================
           SINGLE GLOBAL ORB
       ========================= */}
@@ -123,7 +123,7 @@ export default function PageScene() {
       <Hero onPhase={setPhase} />
 
       {/* ===== ABOUT (CENTERED + ORB COLOR-CHANGE TEXT) ===== */}
-      <Section id="about" eyebrow="ABOUT" title="A product-minded software engineer." center>
+      <Section ref={aboutRef} id="about" eyebrow="ABOUT" title="A product-minded software engineer." center>
         <OrbMaskedText
           orbSizePx={520}
           orbXPx={orbXPx}

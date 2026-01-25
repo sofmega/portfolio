@@ -1,4 +1,5 @@
 // src/components/Section.tsx
+import { forwardRef } from "react";
 import Reveal from "@/components/Reveal";
 
 type SectionProps = {
@@ -12,16 +13,20 @@ type SectionProps = {
   center?: boolean;
 };
 
-export default function Section({
-  id,
-  eyebrow,
-  title,
-  subtitle,
-  children,
-  center = false,
-}: SectionProps) {
+const Section = forwardRef<HTMLElement, SectionProps>(function Section(
+  {
+    id,
+    eyebrow,
+    title,
+    subtitle,
+    children,
+    center = false,
+  },
+  ref
+) {
   return (
     <section
+      ref={ref}
       id={id}
       className="bg-[var(--bg)] px-6 md:px-10 py-28"
     >
@@ -46,10 +51,13 @@ export default function Section({
 
           {subtitle ? (
             <Reveal delay={0.06}>
-              <p className={center
-                ? "max-w-2xl text-center text-sm leading-relaxed text-black/60"
-                : "max-w-md text-sm leading-relaxed text-black/60"
-              }>
+              <p
+                className={
+                  center
+                    ? "max-w-2xl text-center text-sm leading-relaxed text-black/60"
+                    : "max-w-md text-sm leading-relaxed text-black/60"
+                }
+              >
                 {subtitle}
               </p>
             </Reveal>
@@ -63,4 +71,6 @@ export default function Section({
       </div>
     </section>
   );
-}
+});
+
+export default Section;
