@@ -22,10 +22,28 @@ import type { HeroPhase } from "@/components/HeroIntro";
 export default function PageScene() {
   const [phase, setPhase] = useState<HeroPhase>("loading");
   const aboutRef = useRef<HTMLElement | null>(null);
+  const experienceRef = useRef<HTMLElement | null>(null);
+  const projectsRef = useRef<HTMLElement | null>(null);
+  const educationRef = useRef<HTMLElement | null>(null);
 
   const { scrollYProgress: aboutProgress } = useScroll({
     target: aboutRef,
     offset: ["start end", "end start"],
+  });
+
+  const { scrollYProgress: experienceProgress } = useScroll({
+    target: experienceRef,
+    offset: ["start end", "end start"],
+  });
+
+  const { scrollYProgress: projectsProgress } = useScroll({
+    target: projectsRef,
+    offset: ["start end", "end start"],
+  });
+
+  const { scrollYProgress: educationProgress } = useScroll({
+    target: educationRef,
+    offset: ["start start", "end start"],
   });
 
   /* =========================
@@ -49,11 +67,51 @@ export default function PageScene() {
   const travelY = useMemo(() => vh * 0.10, [vh]);
 
   /* =========================
-     SCROLL MOTION IN PX
+     SCROLL MOTION (ABOUT + PROJECTS)
   ========================= */
-  const xScrollRawPx = useTransform(aboutProgress, [0.0, 0.2, 1.0], [0, travelX, travelX]);
-  const yScrollRawPx = useTransform(aboutProgress, [0.0, 0.2, 1.0], [0, travelY, travelY]);
-  const scaleScrollRaw = useTransform(aboutProgress, [0.0, 1.0], [1, 1.65]);
+  const aboutX = useTransform(aboutProgress, [0.0, 0.2, 1.0], [0, travelX, travelX], { clamp: true });
+  const aboutY = useTransform(aboutProgress, [0.0, 0.2, 1.0], [0, travelY, travelY], { clamp: true });
+  const aboutScale = useTransform(aboutProgress, [0.0, 1.0], [1, 1.65], { clamp: true });
+
+  const experienceWeight = useTransform(experienceProgress, [0.0, 0.08, 0.92, 1.0], [0, 1, 1, 0], {
+    clamp: true,
+  });
+  const experienceScale = useTransform(experienceProgress, [0.0, 1.0], [1.65, 0.5], { clamp: true });
+
+  const projectsWeight = useTransform(projectsProgress, [0.0, 0.06, 0.94, 1.0], [0, 1, 1, 0], {
+    clamp: true,
+  });
+  const projectsX = useTransform(projectsProgress, [0.0, 0.08, 1.0], [0, -vw * 0.34, -vw * 0.34], {
+    clamp: true,
+  });
+  const projectsY = useTransform(projectsProgress, [0.0, 0.08, 1.0], [0, -vh * 0.22, -vh * 0.22], {
+    clamp: true,
+  });
+  const projectsScale = useTransform(projectsProgress, [0.0, 0.08, 1.0], [0.5, 0.5, 0.5], {
+    clamp: true,
+  });
+
+  const xScrollRawPx = useTransform([aboutX, projectsX, projectsWeight], (v) => {
+    const [ax, px, w] = v as [number, number, number];
+    return ax * (1 - w) + px * w;
+  });
+
+  const yScrollRawPx = useTransform([aboutY, projectsY, projectsWeight], (v) => {
+    const [ay, py, w] = v as [number, number, number];
+    return ay * (1 - w) + py * w;
+  });
+
+  const scaleAfterExperience = useTransform([aboutScale, experienceScale, experienceWeight], (v) => {
+    const [as, es, w] = v as [number, number, number];
+    return as * (1 - w) + es * w;
+  });
+
+  const scaleScrollRaw = useTransform([scaleAfterExperience, projectsScale, projectsWeight], (v) => {
+    const [s, ps, w] = v as [number, number, number];
+    return s * (1 - w) + ps * w;
+  });
+
+  const educationFade = useTransform(educationProgress, [0.0, 0.15, 1.0], [1, 0, 0], { clamp: true });
 
   const xScrollPx = useSpring(xScrollRawPx, { stiffness: 120, damping: 22, mass: 0.7 });
   const yScrollPx = useSpring(yScrollRawPx, { stiffness: 120, damping: 22, mass: 0.7 });
@@ -63,6 +121,11 @@ export default function PageScene() {
      ENABLE SCROLL AFTER HERO
   ========================= */
   const enabled: MotionValue<number> = useMotionValue(0);
+
+  const orbOpacity = useTransform([educationFade, enabled], (v) => {
+    const [f, e] = v as [number, number];
+    return f * e;
+  });
 
   useEffect(() => {
     if (phase === "done") {
@@ -99,7 +162,6 @@ export default function PageScene() {
         className="pointer-events-none fixed left-1/2 top-1/2 z-10 mix-blend-multiply"
         initial={{ opacity: 0, width: "80px", height: "80px" }}
         animate={{
-          opacity: phase === "loading" ? 0 : 1,
           width: phase === "loading" ? "80px" : "min(560px,78vw)",
           height: phase === "loading" ? "80px" : "min(560px,78vw)",
         }}
@@ -108,6 +170,7 @@ export default function PageScene() {
           x: orbXPx,
           y: orbYPx,
           scale: orbScale,
+          opacity: orbOpacity,
           translateX: "-50%",
           translateY: "-50%",
           borderRadius: 9999,
@@ -150,6 +213,7 @@ export default function PageScene() {
       </Section>
 
       <Section
+        ref={experienceRef}
         id="experience"
         eyebrow="EXPERIENCE"
         title="Building systems that ship."
@@ -208,44 +272,60 @@ export default function PageScene() {
       </Section>
 
       <Section
+        ref={projectsRef}
         id="projects"
         eyebrow="PROJECTS"
         title="Selected work."
         subtitle="A curated set of projects focused on real-world constraints, performance, and polish."
       >
-        <div className="grid gap-6 md:grid-cols-2">
-          <div className="rounded-2xl border border-black/10 bg-white/40 p-5">
-            <div className="text-sm tracking-[0.2em] text-black/50">SAAS PLATFORM</div>
-            <h3 className="mt-2 text-lg font-medium text-black">Multi-tenant SaaS for HR & Sales</h3>
-            <p className="mt-3 text-sm text-black/65">
-              Built a production platform used by 50+ clients with secure auth, dashboards, and CI/CD-backed releases.
-            </p>
+        <div className="grid gap-8 md:grid-cols-[260px_1fr] md:items-start">
+          <div className="space-y-4">
+            <p className="text-[11px] tracking-[0.35em] text-black/55">FEATURED WORK</p>
+            <a
+              href="https://github.com/sofmega"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-black/20 px-4 py-2 text-[11px] tracking-[0.35em] text-black/70 hover:bg-black/5 transition"
+            >
+              ALL WORK →
+            </a>
           </div>
-          <div className="rounded-2xl border border-black/10 bg-white/40 p-5">
-            <div className="text-sm tracking-[0.2em] text-black/50">SERVICENOW</div>
-            <h3 className="mt-2 text-lg font-medium text-black">Content Management System</h3>
-            <p className="mt-3 text-sm text-black/65">
-              Delivered a ServiceNow SGC with approvals, notifications, and workflow automation for conferences.
-            </p>
-          </div>
-          <div className="rounded-2xl border border-black/10 bg-white/40 p-5">
-            <div className="text-sm tracking-[0.2em] text-black/50">ERP</div>
-            <h3 className="mt-2 text-lg font-medium text-black">ERP Update Validation</h3>
-            <p className="mt-3 text-sm text-black/65">
-              Led scenario testing and data extraction (PL/SQL) to validate an ERP upgrade.
-            </p>
-          </div>
-          <div className="rounded-2xl border border-black/10 bg-white/40 p-5">
-            <div className="text-sm tracking-[0.2em] text-black/50">QUALITY</div>
-            <h3 className="mt-2 text-lg font-medium text-black">CI/CD & QA Enablement</h3>
-            <p className="mt-3 text-sm text-black/65">
-              Implemented automated tests, code reviews, and release gates to improve delivery quality.
-            </p>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="rounded-2xl border border-black/10 bg-white/40 p-5">
+              <div className="text-sm tracking-[0.2em] text-black/50">SAAS PLATFORM</div>
+              <h3 className="mt-2 text-lg font-medium text-black">Multi-tenant SaaS for HR & Sales</h3>
+              <p className="mt-3 text-sm text-black/65">
+                Built a production platform used by 50+ clients with secure auth, dashboards, and CI/CD-backed releases.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-black/10 bg-white/40 p-5">
+              <div className="text-sm tracking-[0.2em] text-black/50">SERVICENOW</div>
+              <h3 className="mt-2 text-lg font-medium text-black">Content Management System</h3>
+              <p className="mt-3 text-sm text-black/65">
+                Delivered a ServiceNow SGC with approvals, notifications, and workflow automation for conferences.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-black/10 bg-white/40 p-5">
+              <div className="text-sm tracking-[0.2em] text-black/50">ERP</div>
+              <h3 className="mt-2 text-lg font-medium text-black">ERP Update Validation</h3>
+              <p className="mt-3 text-sm text-black/65">
+                Led scenario testing and data extraction (PL/SQL) to validate an ERP upgrade.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-black/10 bg-white/40 p-5">
+              <div className="text-sm tracking-[0.2em] text-black/50">QUALITY</div>
+              <h3 className="mt-2 text-lg font-medium text-black">CI/CD & QA Enablement</h3>
+              <p className="mt-3 text-sm text-black/65">
+                Implemented automated tests, code reviews, and release gates to improve delivery quality.
+              </p>
+            </div>
           </div>
         </div>
       </Section>
 
       <Section
+        ref={educationRef}
         id="education"
         eyebrow="EDUCATION"
         title="Foundations & learning."
