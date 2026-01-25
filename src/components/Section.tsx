@@ -23,7 +23,7 @@ export default function Section({
   return (
     <section
       id={id}
-      className="bg-[var(--bg)] px-6 md:px-10 py-28 border-t border-[color:var(--hairline)]"
+      className="bg-[var(--bg)] px-6 md:px-10 py-28"
     >
       <div className="mx-auto max-w-6xl">
         {/* Header */}

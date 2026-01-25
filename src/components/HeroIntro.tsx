@@ -78,7 +78,7 @@ function FallingText() {
         transition={{ duration: 0.5 }}
         className="pt-24 text-[11px] tracking-[0.35em] text-black/55"
       >
-        SOUFIANE RADOUANE - PRODUCT-MINDED SOFTWARE ENGINEER
+        SOUFIANE RADOUANE
       </motion.p>
 
       <div className="absolute inset-0 mx-auto max-w-7xl px-6 md:px-10">
@@ -89,7 +89,7 @@ function FallingText() {
             initial="hidden"
             animate="show"
           >
-            {makeChars("PRODUCT")}
+            {makeChars("Software")}
           </motion.h1>
 
           <motion.h2
@@ -98,7 +98,7 @@ function FallingText() {
             initial="hidden"
             animate="show"
           >
-            {makeChars("ENGINEERING")}
+            {makeChars("ENGINEER")}
           </motion.h2>
 
           <motion.h3
@@ -107,11 +107,11 @@ function FallingText() {
             initial="hidden"
             animate="show"
           >
-            {makeChars("STUDIO")}
+            {makeChars("Looking for CDI")}
           </motion.h3>
 
           <div className="col-span-5 col-start-8 row-start-4 mt-8 text-sm leading-relaxed text-black/60">
-            Crafting modern interfaces with an editorial rhythm, clean systems, and animation that feels deliberate.
+            
           </div>
         </div>
       </div>
