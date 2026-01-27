@@ -226,7 +226,7 @@ export default function PageScene() {
         ref={experienceRef}
         id="experience"
         eyebrow="EXPERIENCE"
-        title="Building systems that ship."
+        title=""
         subtitle="ServiceNow, Java full-stack, and workflow-heavy products - delivered with clarity and maintainability."
       >
         <div className="space-y-10 text-black/75">
@@ -242,7 +242,7 @@ export default function PageScene() {
               Google Cloud, CI/CD, Nginx
             </p>
             <ul className="mt-3 space-y-1 text-sm text-black/70">
-              <li>Built a SaaS platform used by 50+ clients across HR, sales, and operations.</li>
+              <li>Built a SaaS platform used by 20+ clients across HR, sales, and operations.</li>
               <li>Set up CI/CD with automated tests prior to deployment and organized code reviews.</li>
               <li>Partnered with product and clients for planning, specs, and validation.</li>
               <li>Acted as quality lead for ticket organization and team support (12 people).</li>
@@ -252,7 +252,7 @@ export default function PageScene() {
           <div>
             <div className="flex flex-wrap items-baseline justify-between gap-2">
               <div className="text-lg font-medium text-black">
-                N2 Support Engineer · LabelVie
+                N2 Support Engineer · Group LabelVie
               </div>
               <div className="text-sm text-black/55">Morocco · On-site · Jun 2023 - Jun 2024</div>
             </div>

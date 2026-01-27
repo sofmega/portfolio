@@ -298,7 +298,8 @@ export default function LiquidOrb({
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      // Cap DPR for performance; higher values are costly on large canvases.
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
 
       const w = Math.max(1, Math.floor(rect.width * dpr));
       const h = Math.max(1, Math.floor(rect.height * dpr));
@@ -317,12 +318,29 @@ export default function LiquidOrb({
     let raf = 0;
     const start = performance.now();
     let running = true;
+    let inView = true;
+
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const onVis = () => {
-      running = document.visibilityState === "visible";
+      running = document.visibilityState === "visible" && inView && !prefersReducedMotion;
       if (running) raf = requestAnimationFrame(render);
     };
     document.addEventListener("visibilitychange", onVis);
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        inView = !!entry?.isIntersecting;
+        running = document.visibilityState === "visible" && inView && !prefersReducedMotion;
+        if (running) raf = requestAnimationFrame(render);
+      },
+      { root: null, threshold: 0.01 }
+    );
+    io.observe(canvas);
 
     const render = () => {
       if (!running) return;
@@ -330,8 +348,6 @@ export default function LiquidOrb({
       hover += (hoverTarget - hover) * 0.08;
       mouseSmooth.x += (mouse.x - mouseSmooth.x) * 0.12;
       mouseSmooth.y += (mouse.y - mouseSmooth.y) * 0.12;
-
-      resize();
 
       gl.uniform2f(uRes, canvas.width, canvas.height);
       gl.uniform1f(uTime, (performance.now() - start) / 1000);
@@ -350,6 +366,7 @@ export default function LiquidOrb({
       cancelAnimationFrame(raf);
       document.removeEventListener("visibilitychange", onVis);
       ro.disconnect();
+      io.disconnect();
       canvas.removeEventListener("pointerenter", onEnter);
       canvas.removeEventListener("pointerleave", onLeave);
       canvas.removeEventListener("pointermove", onMove);
