@@ -400,7 +400,7 @@ export default function PageScene() {
       <Section
         id="contact"
         eyebrow="CONTACT"
-        title=""
+        title="Let's connect."
         subtitle="Open to full-stack roles, Software engineer, Engneer Support , QA Test , ServiceNow Developer."
       >
         <div className="flex flex-col gap-3 text-black/70">
@@ -414,6 +414,5 @@ export default function PageScene() {
     </div>
   );
 }
-
 
 

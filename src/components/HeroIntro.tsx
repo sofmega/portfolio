@@ -10,6 +10,8 @@ function clamp01(n: number) {
   return Math.max(0, Math.min(1, n));
 }
 
+let hasAnimatedOnce = false;
+
 /* =========================
    Loader Shapes (Plus + Circle)
 ========================= */
@@ -46,15 +48,15 @@ function BuildCircle({ progress }: { progress: number }) {
 
 const wordVariants: Variants = {
   hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.03 } },
+  show: { opacity: 1, transition: { staggerChildren: 0.035 } },
 };
 
 const charVariants: Variants = {
-  hidden: { y: -90, opacity: 0 },
+  hidden: { y: -140, opacity: 0 },
   show: {
     y: 0,
     opacity: 1,
-    transition: { type: "spring", stiffness: 220, damping: 18 },
+    transition: { type: "spring", stiffness: 240, damping: 20 },
   },
 };
 
@@ -62,6 +64,11 @@ function FallingText() {
   const big = "text-[clamp(52px,7vw,128px)] font-medium tracking-tight leading-[0.92]";
   const ink = "text-black";
   const muted = "text-black/55";
+  const [shouldAnimate] = useState(!hasAnimatedOnce);
+
+  useEffect(() => {
+    hasAnimatedOnce = true;
+  }, []);
 
   const makeChars = (word: string) =>
     word.split("").map((c, i) => (
@@ -72,40 +79,43 @@ function FallingText() {
 
   return (
     <div className="pointer-events-none absolute inset-0 z-30 mx-auto max-w-7xl px-6 md:px-10">
-      <motion.p
-        initial={{ opacity: 0, y: -6 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="pt-24 text-[11px] tracking-[0.35em] text-black/55"
-      >
-        SOUFIANE RADOUANE
-      </motion.p>
-
       <div className="absolute inset-0 mx-auto max-w-7xl px-6 md:px-10">
-        <div className="grid h-full grid-cols-12 grid-rows-[1fr_auto_auto_1fr] items-center">
+        <div className="grid h-full grid-cols-12 grid-rows-[auto_auto_auto_auto] items-start gap-y-6 pt-20">
+          <motion.p
+            className="col-span-12 text-[11px] tracking-[0.35em] text-black/55"
+            initial={shouldAnimate ? { opacity: 0, y: -6 } : false}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            SOUFIANE RADOUANE
+          </motion.p>
+
           <motion.h1
-            className={`col-span-10 row-start-1 self-end ${big} ${ink}`}
+            className={`col-span-6 row-start-2 text-left ${big} ${ink}`}
             variants={wordVariants}
-            initial="hidden"
+            initial={shouldAnimate ? "hidden" : false}
             animate="show"
+            transition={{ staggerChildren: 0.035, delayChildren: 0.05 }}
           >
             {makeChars("Software")}
           </motion.h1>
 
           <motion.h2
-            className={`col-span-12 row-start-2 ${big} ${ink}`}
+            className={`col-span-8 col-start-3 row-start-3 text-center ${big} ${ink}`}
             variants={wordVariants}
-            initial="hidden"
+            initial={shouldAnimate ? "hidden" : false}
             animate="show"
+            transition={{ staggerChildren: 0.035, delayChildren: 0.2 }}
           >
             {makeChars("ENGINEER")}
           </motion.h2>
 
           <motion.h3
-            className={`col-span-10 row-start-3 self-start ${big} ${ink}`}
+            className={`col-span-7 col-start-6 row-start-4 whitespace-nowrap text-left ${big} ${ink}`}
             variants={wordVariants}
-            initial="hidden"
+            initial={shouldAnimate ? "hidden" : false}
             animate="show"
+            transition={{ staggerChildren: 0.035, delayChildren: 0.35 }}
           >
             {makeChars("Looking for CDI")}
           </motion.h3>
@@ -206,22 +216,7 @@ export default function HeroIntro({ onPhase }: { onPhase?: (p: HeroPhase) => voi
         />
       )}
 
-      {/* text shows while morph + after */}
-      <AnimatePresence>
-        {phase === "morph" && (
-          <motion.div
-            key="text"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-          >
-            <FallingText />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-
+      {/* text shows after morph */}
       {phase === "done" && <FallingText />}
     </section>
   );
