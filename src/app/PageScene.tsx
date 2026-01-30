@@ -1,4 +1,4 @@
-// src/app/PageScene.tsx
+﻿// src/app/PageScene.tsx
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -18,6 +18,7 @@ import Section from "@/components/Section";
 import LiquidOrb from "@/components/LiquidOrb";
 import OrbMaskedText from "@/components/OrbMaskedText";
 import type { HeroPhase } from "@/components/HeroIntro";
+import { Mail, Phone, Github, Linkedin, MapPin } from "lucide-react";
 
 export default function PageScene() {
   const [phase, setPhase] = useState<HeroPhase>("loading");
@@ -146,7 +147,7 @@ export default function PageScene() {
   }, [phase, enabled]);
 
   /* =========================
-     ✅ FIX "unknown" BY CASTING TUPLE
+     âœ… FIX "unknown" BY CASTING TUPLE
   ========================= */
   const orbXPx = useTransform([xScrollPx, enabled], (v) => {
     const [x, e] = v as [number, number];
@@ -254,7 +255,7 @@ export default function PageScene() {
               <div className="text-lg font-medium text-black">
                 N2 Support Engineer · Group LabelVie
               </div>
-              <div className="text-sm text-black/55">Morocco · On-site · Jun 2023 - Jun 2024</div>
+               <div className="text-sm text-black/55">Morocco · On-site · Jun 2023 - Jun 2024</div>
             </div>
             <ul className="mt-3 space-y-1 text-sm text-black/70">
               <li>Managed L1 and L2 incidents for business applications.</li>
@@ -269,7 +270,7 @@ export default function PageScene() {
           <div>
             <div className="flex flex-wrap items-baseline justify-between gap-2">
               <div className="text-lg font-medium text-black">
-                Consultant technico-fonctionnel ServiceNow · DXC Technology
+                 Consultant technico-fonctionnel ServiceNow · DXC Technology
               </div>
               <div className="text-sm text-black/55">Rabat, Rabat-Salé-Kénitra, Morocco · Remote · Apr 2022 - Sep 2022</div>
             </div>
@@ -342,7 +343,7 @@ export default function PageScene() {
               <div className="text-sm tracking-[0.2em] text-black/50">FULL STACK</div>
               <h3 className="mt-2 text-lg font-medium text-black">CV_generator</h3>
               <p className="mt-3 text-sm text-black/65">
-                Production-ready CV/cover letter generator built with React, Node/Express, Supabase, and Stripe—AI text
+                 Production-ready CV/cover letter generator built with React, Node/Express, Supabase, and Stripe—AI text
                 + PDF rendering included.
               </p>
             </a>
@@ -374,7 +375,7 @@ export default function PageScene() {
         <div className="space-y-6 text-black/75">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <div className="text-lg font-medium text-black">
-              INGETIS Paris — Master 2, Expert en Architecture & Développement Logiciel
+             INGETIS Paris — Master 2, Expert en Architecture & Développement Logiciel
             </div>
             <div className="text-sm text-black/55">Sep 2024 - Jul 2025</div>
           </div>
@@ -399,17 +400,20 @@ export default function PageScene() {
       <Section
         id="contact"
         eyebrow="CONTACT"
-        title="Let's build something."
-        subtitle="Open to full-stack roles, product engineering, and modern frontend work."
+        title=""
+        subtitle="Open to full-stack roles, Software engineer, Engneer Support , QA Test , ServiceNow Developer."
       >
-        <div className="space-y-2 text-black/70">
-          <p>Email: Soufiane.radouane99@gmail.com</p>
-          <p>Phone: 07 45 76 79 13</p>
-          <p>GitHub: github.com/sofmega</p>
-          <p>LinkedIn: /in/soufiane-radouane-9b047220a/</p>
-          <p>Location: Asnières-sur-Seine (92) · Available immediately</p>
+        <div className="flex flex-col gap-3 text-black/70">
+          <a href="mailto:Soufiane.radouane99@gmail.com" className="inline-flex items-center gap-3 transition hover:text-black"><Mail className="h-4 w-4 text-black/60" aria-hidden="true" /><span>Soufiane.radouane99@gmail.com</span></a>
+          <a href="tel:+33745767913" className="inline-flex items-center gap-3 transition hover:text-black"><Phone className="h-4 w-4 text-black/60" aria-hidden="true" /><span>+33 7 45 76 79 13</span></a>
+          <a href="https://github.com/sofmega" target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 transition hover:text-black"><Github className="h-4 w-4 text-black/60" aria-hidden="true" /><span>github.com/sofmega</span></a>
+          <a href="https://www.linkedin.com/in/soufiane-radouane-9b047220a/" target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 transition hover:text-black"><Linkedin className="h-4 w-4 text-black/60" aria-hidden="true" /><span>linkedin.com/in/soufiane-radouane-9b047220a</span></a>
+          <a href="https://maps.google.com/?q=Asnieres-sur-Seine+92" target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 transition hover:text-black"><MapPin className="h-4 w-4 text-black/60" aria-hidden="true" /><span>Asnieres-sur-Seine (92) · Available immediately</span></a>
         </div>
       </Section>
     </div>
   );
 }
+
+
+
